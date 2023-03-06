@@ -1,38 +1,105 @@
-.App {
+@import url("https://fonts.googleapis.com/css2?family=Outfit&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Quicksand&display=swap");
+html {
+  font-size: 16px;
+}
+:root {
+  --heading-color: #ff416c;
+  --white-color: #fff;
+  --black-color: #000;
+  --heading-font: "Outfit", sans-serif;
+  --p-font: "Quicksand", sans-serif;
+  --bg1-color: #e4e0e0;
+  --bg2-color: #f8f7f7;
+  --bg3-color: #f0eeee;
+  --bg4-color: #61677c;
+  --soft-white: #ebe4e7;
+  --bg2-footer: #d6d6d6;
+  --spacing-0: 0rem;
+  --spacing-1: 1rem;
+  --spacing-2: 2rem;
+  --spacing-4: 4rem;
+  --spacing-8: 8rem;
+  --spacing-12: 12rem;
+  --spacing-16: 16rem;
+  --spacing-20: 20rem;
+  --font-small: 12px;
+  --font-medium: 16px;
+  --font-large: 32px;
+  --font-xl: 64px;
+  --rounded-sm: 8px;
+  --rounded-md: 16px;
+  --rounded-xl: 32px;
+}
+body {
+}
+p {
+  padding: 0px;
+  margin: 0px;
+}
+
+
+.auth-main{
+  background-color: var(--bg2-color);
+  font-family: var(--heading-font);
   text-align: center;
+  padding: var(--spacing-4);
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.auth-main2{
+  background-color: var(--bg2-color);
+  font-family: var(--heading-font);
+  text-align: center;
+  padding: var(--spacing-1);
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.auth-title{
+  margin-bottom: var(--spacing-1);
+  line-height: 0.2;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.auth-title h3{
 }
+.auth-title p{
 
-.App-link {
-  color: #61dafb;
 }
+.auth-form{
+  background-color: var(--bg4-color);
+  padding: var(--spacing-2);
+  color: var(--white-color);
+  border-radius: var(--spacing-1);
+}
+.auth-input{
+  margin: var(--spacing-0) var(--spacing-0) var(--spacing-1);
+}
+.auth-input input{
+border: none;
+padding: 4px var(--spacing-1);
+}
+.auth-input label{
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+}
+.main-btn{
+  margin-top:var(--spacing-1) ;
+}
+.main-btn button{
+  border: none;
+  padding: 4px var(--spacing-2);
+  background-color: var(--heading-color);
+  color: var(--bg2-color);
+  border-radius: 8px;
+}
+.nav-link {
+  color: var(--black-color) !important;
+  text-decoration: none !important;
+}
+.nav-link:hover{
+  color: var(--heading-color) !important;
+}
+.auth-link{ 
+  color: var(--soft-white);
+  text-decoration: underline;
+}
+.mt-4 h4{
+  font-size: var(--font-medium);
+}
+.auth-link:hover{
+    color: var(--heading-color);
 }
