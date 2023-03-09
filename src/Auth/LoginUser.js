@@ -66,7 +66,7 @@ const LoginUser = () => {
               <div className="mt-4">
                 <h4>
                   Don't Have an Account ?{" "}
-                  <NavLink to="/register" className="auth-link">
+                  <NavLink to="/register-user" className="auth-link">
                     Sign Up
                   </NavLink>{" "}
                 </h4>

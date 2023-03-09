@@ -1,26 +1,47 @@
-import React,{useState} from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
+import axios from "axios";
+import { useSnackbar } from "notistack";
 
 const RegisterUser = () => {
-  const [loading , setLoading ] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
   const initialState = {
-    userName:'',
-    email:"",
-    phone:'',
-    password:'',
-    confirm_password:''
+    userName: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirm_password: "",
   };
-  const [registerData,setRegisterData] = useState(initialState);
+  const [registerData, setRegisterData] = useState(initialState);
 
-  const handleChange = (e) =>{
+  const handleChange = (e) => {
     e.preventDefault();
-
-  }
+    setRegisterData({ ...registerData, [e.target.name]: e.target.value });
+  };
   const registerHandler = (e) => {
     e.preventDefault();
-  }
-    return (
+    setLoading(true);
+    axios({
+      url:`${process.env.REACT_APP_BASEURL}/user/registerUser`,
+      method:"POST",
+      data:{
+        ...registerData
+      }
+    }).then((res)=>{
+      setLoading(false);
+      enqueueSnackbar(res.data.message , {variant:"success"})
+      navigate('/verify-otp',{state:registerData.email});
+      console.log(res.data);
+    }).catch((err)=>{
+      setLoading(false);
+      enqueueSnackbar(err.response.data.message , {variant:"error"})
+      console.log()
+    })
+  };
+  return (
     <div className="auth-main">
       <div className="auth-title">
         <h3>Create Account</h3>
@@ -36,8 +57,8 @@ const RegisterUser = () => {
               <input
                 type="text"
                 placeholder="Full Name Here"
-                name="name"
-                value={registerData.name}
+                name="userName"
+                value={registerData.userName}
                 onChange={(e) => handleChange(e)}
               />
             </div>
@@ -80,7 +101,7 @@ const RegisterUser = () => {
               <input
                 type="password"
                 placeholder="Confirm Password Here"
-                name="password_confirmation"
+                name="confirm_password"
                 value={registerData.password_confirmation}
                 onChange={(e) => handleChange(e)}
               />
@@ -114,7 +135,7 @@ const RegisterUser = () => {
         <div className="col-md-4"></div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default RegisterUser
+export default RegisterUser;
