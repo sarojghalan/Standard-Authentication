@@ -1,19 +1,40 @@
 import React,{useState} from 'react'
 import { NavLink } from 'react-router-dom'
 import CircularProgress from "@mui/material/CircularProgress";
+import { useSnackbar } from "notistack";
+
+import axios from 'axios';
 const LoginUser = () => {
   const initialState ={
     email:"",
     password:""
   }
+  const { enqueueSnackbar } = useSnackbar();
   const [loading , setLoading] = useState(false)
   const [loginUserData , setLoginUserData] = useState(initialState)
 
   const handleChange = (e) => {
     e.preventDefault();
+    setLoginUserData({...loginUserData,[e.target.name]:e.target.value})
   }
   const loginHandler = (e) => {
     e.preventDefault();
+    setLoading(true);
+    axios({
+      url:`${process.env.REACT_APP_BASEURL}/user/loginUser`,
+      method:'POST',
+      data:{
+        ...loginUserData
+      }
+    }).then(res => {
+      setLoading(false);
+      console.log(res.data)
+      enqueueSnackbar(res.data.message , {variant:"success"})
+    }).catch(err => {
+      console.log(err)
+      setLoading(false);
+      enqueueSnackbar(err.response.data.message , {variant:"error"})
+    })
   }
   return (
     <div className="auth-main">

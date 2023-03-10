@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation,useNavigate } from "react-router-dom";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useSnackbar } from "notistack";
@@ -7,6 +7,7 @@ import { useSnackbar } from "notistack";
 const VerifyOTP = () => {
   const [loading , setLoading] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const email = location?.state;
   const [token , setToken] = useState("");
   const { enqueueSnackbar } = useSnackbar();
@@ -22,7 +23,8 @@ const VerifyOTP = () => {
       }
     }).then(res => {
       setLoading(false);
-      console.log(res)
+      enqueueSnackbar(res.data.message , {variant:"success"})
+      navigate('/')
     }).catch(err => {
       setLoading(false);
       enqueueSnackbar(err.response.data.message , {variant:"error"})
