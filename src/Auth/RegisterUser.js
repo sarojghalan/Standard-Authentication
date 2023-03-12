@@ -26,7 +26,7 @@ const RegisterUser = () => {
     setLoading(true);
     axios({
       url:`${process.env.REACT_APP_BASEURL}/user/registerUser`,
-      method:"POST",
+      method:"POST", 
       data:{
         ...registerData
       }
