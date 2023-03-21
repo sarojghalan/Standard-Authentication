@@ -230,11 +230,7 @@ const RegisterUser = () => {
               />
             </div>
             <div className="main-btn">
-              {checkLowerCase ==false &&
-              checkNumber ==false &&
-              checkSpecialChar ==false &&
-              checkPasswordLength ==false &&
-              checkUpperCase == false ? (
+              {registerData.password !== registerData.confirm_password ? (
                 <button disabled={true}>Register</button>
               ) : loading ? (
                 <button>
@@ -254,7 +250,7 @@ const RegisterUser = () => {
             <div className="mt-4">
               <h4>
                 ALready Have an Account ?{" "}
-                <NavLink to="/login" className="auth-link">
+                <NavLink to="/" className="auth-link">
                   Log In
                 </NavLink>{" "}
               </h4>

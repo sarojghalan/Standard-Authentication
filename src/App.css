@@ -128,3 +128,6 @@ margin-top: 8px;
 .password-strength div>p{
   color: white !important;
 }
+.captcha{
+  padding-left: 45px;
+}
