@@ -103,3 +103,21 @@ padding: 4px var(--spacing-1);
 .auth-link:hover{
     color: var(--heading-color);
 }
+.checker{
+margin:  var(--spacing-16) var(--spacing-4);
+}
+.checker1{
+  text-align: end;
+}
+.checker2{
+text-align: start;
+}
+.span-checker{
+  margin: 2px 8px var(--spacing-0);
+}
+.span-checker1{
+color: green;
+}
+.span-checker2{
+  color: red;
+}

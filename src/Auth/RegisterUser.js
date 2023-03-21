@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
@@ -16,31 +16,91 @@ const RegisterUser = () => {
     confirm_password: "",
   };
   const [registerData, setRegisterData] = useState(initialState);
+  const [checkNumber, setCheckNumber] = useState(false);
+  const [checkSpecialChar, setCheckSpecialChar] = useState(false);
+  const [checkLowerCase, setCheckLowerCase] = useState(false);
+  const [checkUpperCase, setCheckUpperCase] = useState(false);
 
   const handleChange = (e) => {
     e.preventDefault();
     setRegisterData({ ...registerData, [e.target.name]: e.target.value });
   };
+
+  useEffect(()=>{
+    if(/\d/.test(registerData.password)){
+      setCheckNumber(true);
+    }
+    if(!/\d/.test(registerData.password)){
+      setCheckNumber(false);
+    }
+    if (!/[a-z]/.test(registerData.password)) {
+      setCheckLowerCase(false)
+      console.log("Password must contain at least one lowercase letter (a-z).");
+    }
+    if (/[a-z]/.test(registerData.password)) {
+      setCheckLowerCase(true)
+      console.log("Password must contain at least one lowercase letter (a-z).");
+    }
+  
+    // Check for uppercase letter
+    if (!/[A-Z]/.test(registerData.password)) {
+      console.log("Password must contain at least one uppercase letter (A-Z).");
+      setCheckUpperCase(false)
+    }
+    if (/[A-Z]/.test(registerData.password)) {
+      console.log("Password must contain at least one uppercase letter (A-Z).");
+      setCheckUpperCase(true)
+    }
+  
+    // Check for special character
+    if (!/[!@#$%^&*()_+}{":;'?/>.<,]/.test(registerData.password)) {
+      console.log(
+        "Password must contain at least one special character (!@#$%^&*()_+}{\":;'?/>.<,)."
+      );
+      setCheckSpecialChar(false);
+    }
+    if (/[!@#$%^&*()_+}{":;'?/>.<,]/.test(registerData.password)) {
+      console.log(
+        "Password must contain at least one special character (!@#$%^&*()_+}{\":;'?/>.<,)."
+      );
+      setCheckSpecialChar(true);
+    }
+  
+    // Check for whitespace
+    if (/\s/.test(registerData.password)) {
+      console.log("Password must not contain any whitespace characters.");
+    }
+  
+    // If all checks pass, password is valid
+    if (/^[a-zA-Z0-9!@#$%^&*()_+}{":;'?/>.<,]{8,}$/.test(registerData.password)) {
+      console.log("Password is valid.");
+    }
+  },[registerData.password])
+
   const registerHandler = (e) => {
     e.preventDefault();
     setLoading(true);
     axios({
-      url:`${process.env.REACT_APP_BASEURL}/user/registerUser`,
-      method:"POST", 
-      data:{
-        ...registerData
-      }
-    }).then((res)=>{
-      setLoading(false);
-      enqueueSnackbar(res.data.message , {variant:"success"})
-      navigate('/verify-otp',{state:registerData.email});
-      console.log(res.data);
-    }).catch((err)=>{
-      setLoading(false);
-      enqueueSnackbar(err.response.data.message , {variant:"error"})
-      console.log()
+      url: `${process.env.REACT_APP_BASEURL}/user/registerUser`,
+      method: "POST",
+      data: {
+        ...registerData,
+      },
     })
+      .then((res) => {
+        setLoading(false);
+        enqueueSnackbar(res.data.message, { variant: "success" });
+        navigate("/verify-otp", { state: registerData.email });
+        console.log(res.data);
+      })
+      .catch((err) => {
+        setLoading(false);
+        enqueueSnackbar(err.response.data.message, { variant: "error" });
+        console.log();
+      });
   };
+  console.log("register : ",checkNumber)
+
   return (
     <div className="auth-main">
       <div className="auth-title">
@@ -48,7 +108,41 @@ const RegisterUser = () => {
         <p>Register To Continue !</p>
       </div>
       <div className="row">
-        <div className="col-md-4"></div>
+        <div className="col-md-4">
+          <div className="checker checker1">
+            {checkSpecialChar ? (
+              <p className="span-checker1">
+                {" "}
+                Special Character{" "}
+                <span className="span-checker ">
+                  <i class="fa-solid fa-circle-check"></i>
+                </span>
+              </p>
+            ) : (
+              <p className="span-checker2">
+                Special Character missing{" "}
+                <span className="span-checker">
+                  <i class="fa-solid fa-circle-check"></i>
+                </span>
+              </p>
+            )}
+            {checkNumber ? (
+              <p className="span-checker1">
+                Number
+                <span className="span-checker ">
+                  <i class="fa-solid fa-circle-check"></i>
+                </span>
+              </p>
+            ) : (
+              <p className="span-checker2">
+                Missing Number
+                <span className="span-checker ">
+                  <i class="fa-solid fa-circle-check"></i>
+                </span>
+              </p>
+            )}
+          </div>
+        </div>
         <div className="col-md-4">
           <div className="auth-form">
             <div className="auth-input">
@@ -88,7 +182,7 @@ const RegisterUser = () => {
               <label htmlFor="">Password :</label>
               <br />
               <input
-                type="password"
+                type="text"
                 placeholder="Password Here"
                 name="password"
                 value={registerData.password}
@@ -132,7 +226,40 @@ const RegisterUser = () => {
             </div>
           </div>
         </div>
-        <div className="col-md-4"></div>
+        <div className="col-md-4">
+          <div className="checker checker2">
+            {checkLowerCase ? (
+              <p className="span-checker1">
+                <span className="span-checker ">
+                  <i class="fa-solid fa-circle-check"></i>
+                </span>
+                Lowercase Alphabet
+              </p>
+            ) : (
+              <p className="span-checker2">
+                <span className="span-checker">
+                  <i class="fa-solid fa-circle-check"></i>
+                </span>
+                Lowercase Alphabet Missing
+              </p>
+            )}
+            {checkUpperCase ? (
+              <p className="span-checker1">
+                <span className="span-checker ">
+                  <i class="fa-solid fa-circle-check"></i>
+                </span>
+                Uppercase Alphabet
+              </p>
+            ) : (
+              <p className="span-checker2">
+                <span className="span-checker ">
+                  <i class="fa-solid fa-circle-check"></i>
+                </span>
+                Uppercase Alphabet Missing
+              </p>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
