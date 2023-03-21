@@ -1,8 +1,9 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import { useSnackbar } from "notistack";
+import PasswordStrengthBar from 'react-password-strength-bar';
 
 const RegisterUser = () => {
   const [loading, setLoading] = useState(false);
@@ -20,38 +21,45 @@ const RegisterUser = () => {
   const [checkSpecialChar, setCheckSpecialChar] = useState(false);
   const [checkLowerCase, setCheckLowerCase] = useState(false);
   const [checkUpperCase, setCheckUpperCase] = useState(false);
+  const [checkPasswordLength , setCheckPasswordLength] = useState(false);
 
   const handleChange = (e) => {
     e.preventDefault();
     setRegisterData({ ...registerData, [e.target.name]: e.target.value });
   };
 
-  useEffect(()=>{
-    if(/\d/.test(registerData.password)){
+  useEffect(() => {
+    if (/\d/.test(registerData.password)) {
       setCheckNumber(true);
     }
-    if(!/\d/.test(registerData.password)){
+    if (!/\d/.test(registerData.password)) {
       setCheckNumber(false);
     }
+    if(registerData.password.length > 8){
+      setCheckPasswordLength(true)
+    }
+    if(registerData.password.length < 8){
+      setCheckPasswordLength(false)
+    }
     if (!/[a-z]/.test(registerData.password)) {
-      setCheckLowerCase(false)
+      setCheckLowerCase(false);
       console.log("Password must contain at least one lowercase letter (a-z).");
     }
     if (/[a-z]/.test(registerData.password)) {
-      setCheckLowerCase(true)
+      setCheckLowerCase(true);
       console.log("Password must contain at least one lowercase letter (a-z).");
     }
-  
+
     // Check for uppercase letter
     if (!/[A-Z]/.test(registerData.password)) {
       console.log("Password must contain at least one uppercase letter (A-Z).");
-      setCheckUpperCase(false)
+      setCheckUpperCase(false);
     }
     if (/[A-Z]/.test(registerData.password)) {
       console.log("Password must contain at least one uppercase letter (A-Z).");
-      setCheckUpperCase(true)
+      setCheckUpperCase(true);
     }
-  
+
     // Check for special character
     if (!/[!@#$%^&*()_+}{":;'?/>.<,]/.test(registerData.password)) {
       console.log(
@@ -65,17 +73,19 @@ const RegisterUser = () => {
       );
       setCheckSpecialChar(true);
     }
-  
+
     // Check for whitespace
-    if (/\s/.test(registerData.password)) {
-      console.log("Password must not contain any whitespace characters.");
-    }
-  
+    // if (/\s/.test(registerData.password)) {
+    //   console.log("Password must not contain any whitespace characters.");
+    // }
+
     // If all checks pass, password is valid
-    if (/^[a-zA-Z0-9!@#$%^&*()_+}{":;'?/>.<,]{8,}$/.test(registerData.password)) {
-      console.log("Password is valid.");
-    }
-  },[registerData.password])
+    // if (
+    //   /^[a-zA-Z0-9!@#$%^&*()_+}{":;'?/>.<,]{8,}$/.test(registerData.password)
+    // ) {
+    //   console.log("Password is valid.");
+    // }
+  }, [registerData.password]);
 
   const registerHandler = (e) => {
     e.preventDefault();
@@ -99,7 +109,7 @@ const RegisterUser = () => {
         console.log();
       });
   };
-  console.log("register : ",checkNumber)
+  console.log("register : ", checkNumber);
 
   return (
     <div className="auth-main">
@@ -121,6 +131,22 @@ const RegisterUser = () => {
             ) : (
               <p className="span-checker2">
                 Special Character missing{" "}
+                <span className="span-checker">
+                  <i class="fa-solid fa-circle-check"></i>
+                </span>
+              </p>
+            )}
+            {checkPasswordLength ? (
+              <p className="span-checker1">
+                {" "}
+                Password Length is good{" "}
+                <span className="span-checker ">
+                  <i class="fa-solid fa-circle-check"></i>
+                </span>
+              </p>
+            ) : (
+              <p className="span-checker2">
+                Password length is smaller{" "}
                 <span className="span-checker">
                   <i class="fa-solid fa-circle-check"></i>
                 </span>
@@ -188,6 +214,9 @@ const RegisterUser = () => {
                 value={registerData.password}
                 onChange={(e) => handleChange(e)}
               />
+            <div className="password-strength">
+            <PasswordStrengthBar password={registerData.password} />
+            </div>
             </div>
             <div className="auth-input">
               <label htmlFor="">Confirm Password :</label>
@@ -201,7 +230,13 @@ const RegisterUser = () => {
               />
             </div>
             <div className="main-btn">
-              {loading ? (
+              {checkLowerCase ==false &&
+              checkNumber ==false &&
+              checkSpecialChar ==false &&
+              checkPasswordLength ==false &&
+              checkUpperCase == false ? (
+                <button disabled={true}>Register</button>
+              ) : loading ? (
                 <button>
                   <CircularProgress
                     style={{

@@ -121,3 +121,10 @@ color: green;
 .span-checker2{
   color: red;
 }
+.password-strength{
+padding: 0px 70px;
+margin-top: 8px;
+}
+.password-strength div>p{
+  color: white !important;
+}
