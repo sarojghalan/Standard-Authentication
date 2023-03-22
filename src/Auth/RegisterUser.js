@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import { useSnackbar } from "notistack";
-import PasswordStrengthBar from 'react-password-strength-bar';
+import PasswordStrengthBar from "react-password-strength-bar";
 
 const RegisterUser = () => {
   const [loading, setLoading] = useState(false);
@@ -21,7 +21,8 @@ const RegisterUser = () => {
   const [checkSpecialChar, setCheckSpecialChar] = useState(false);
   const [checkLowerCase, setCheckLowerCase] = useState(false);
   const [checkUpperCase, setCheckUpperCase] = useState(false);
-  const [checkPasswordLength , setCheckPasswordLength] = useState(false);
+  const [checkPasswordLength, setCheckPasswordLength] = useState(false);
+  const [seenToggler, setSeenToggler] = useState(false);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -35,11 +36,11 @@ const RegisterUser = () => {
     if (!/\d/.test(registerData.password)) {
       setCheckNumber(false);
     }
-    if(registerData.password.length > 8){
-      setCheckPasswordLength(true)
+    if (registerData.password.length > 8) {
+      setCheckPasswordLength(true);
     }
-    if(registerData.password.length < 8){
-      setCheckPasswordLength(false)
+    if (registerData.password.length < 8) {
+      setCheckPasswordLength(false);
     }
     if (!/[a-z]/.test(registerData.password)) {
       setCheckLowerCase(false);
@@ -110,6 +111,11 @@ const RegisterUser = () => {
       });
   };
   console.log("register : ", checkNumber);
+
+  const seenHandler = (e) => {
+    e.preventDefault();
+    setSeenToggler(!seenToggler);
+  };
 
   return (
     <div className="auth-main">
@@ -204,19 +210,40 @@ const RegisterUser = () => {
                 onChange={(e) => handleChange(e)}
               />
             </div>
-            <div className="auth-input">
+            <div className="auth-input auth-position">
               <label htmlFor="">Password :</label>
               <br />
-              <input
-                type="text"
-                placeholder="Password Here"
-                name="password"
-                value={registerData.password}
-                onChange={(e) => handleChange(e)}
-              />
-            <div className="password-strength">
-            <PasswordStrengthBar password={registerData.password} />
-            </div>
+              {seenToggler ? (
+                <>
+                  <p className="eye-icon" onClick={(e) => seenHandler(e)}>
+                    <i class="fa-sharp fa-solid fa-eye-slash"></i>
+                  </p>
+                  <input
+                    type="text"
+                    placeholder="Password Here"
+                    name="password"
+                    value={registerData.password}
+                    onChange={(e) => handleChange(e)}
+                  />
+                </>
+              ) : (
+                <>
+                  <p className="eye-icon" onClick={(e) => seenHandler(e)}>
+                  <i class="fa-solid fa-eye"></i>
+                  </p>
+                  <input
+                    type="password"
+                    placeholder="Password Here"
+                    name="password"
+                    value={registerData.password}
+                    onChange={(e) => handleChange(e)}
+                  />
+                </>
+              )}
+
+              <div className="password-strength">
+                <PasswordStrengthBar password={registerData.password} />
+              </div>
             </div>
             <div className="auth-input">
               <label htmlFor="">Confirm Password :</label>

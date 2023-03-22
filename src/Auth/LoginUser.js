@@ -15,6 +15,7 @@ const LoginUser = () => {
   const [loading, setLoading] = useState(false);
   const [loginUserData, setLoginUserData] = useState(initialState);
   const [cookiesChecker, setCookiesChecker] = useState(false);
+  const [captchaChecker, setCaptchaChecker] = useState(false)
 
   useEffect(() => {
     console.log(Cookies.get("userData"));
@@ -25,7 +26,10 @@ const LoginUser = () => {
     setLoginUserData({ ...loginUserData, [e.target.name]: e.target.value });
   };
   function onChange(value) {
-    console.log("Captcha value:", value);
+    console.log("captcha value : ",value)
+    if(value !== null){
+      setCaptchaChecker(true);
+    }
   }
   const loginHandler = (e) => {
     e.preventDefault();
@@ -43,6 +47,7 @@ const LoginUser = () => {
         Cookies.set("userData", res.data.token, { expires: 7 });
         setCookiesChecker(true);
         enqueueSnackbar(res.data.message, { variant: "success" });
+        setLoginUserData(initialState);
       })
       .catch((err) => {
         console.log(err);
@@ -87,7 +92,7 @@ const LoginUser = () => {
             <ReCAPTCHA sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" onChange={onChange} />
             </div>
             <div className="main-btn">
-              {loading ? (
+              {captchaChecker === false? <button disabled ={true}>Sign In</button> : loading ? (
                 <button>
                   <CircularProgress
                     style={{
