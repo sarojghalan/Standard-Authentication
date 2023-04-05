@@ -8,10 +8,25 @@ const ForgotPassword = () => {
     const [email , setEmail] = useState("");
     const [loading , setLoading] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
+    const navigate = useNavigate();
 
     const forgetPasswordHandler = (e) => {
         e.preventDefault();
         setLoading(true)
+        axios({
+          url:`${process.env.REACT_APP_BASEURL}/user/forgotPassword`,
+          method:"POST",
+          data:{
+            email:email
+          }
+        }).then((res)=>{
+          enqueueSnackbar(res.data.message,{variant:"success"});
+          navigate('/verify-token',{state:email})
+          setLoading(false);
+        }).catch((err)=>{
+          console.log(err)
+          setLoading(false);
+        })
     }
   return (
     <>

@@ -15,7 +15,7 @@ const LoginUser = () => {
   const [loading, setLoading] = useState(false);
   const [loginUserData, setLoginUserData] = useState(initialState);
   const [cookiesChecker, setCookiesChecker] = useState(false);
-  const [captchaChecker, setCaptchaChecker] = useState(false)
+  const [captchaChecker, setCaptchaChecker] = useState(false);
 
   useEffect(() => {
     console.log(Cookies.get("userData"));
@@ -57,7 +57,8 @@ const LoginUser = () => {
   };
 
   return (
-    <div className="auth-main">
+    <>
+      <div className="auth-main">
       <div className="auth-title">
         <h3>Welcome</h3>
         <p>Sign In To Continue !</p>
@@ -125,6 +126,7 @@ const LoginUser = () => {
         <div className="col-md-4"></div>
       </div>
     </div>
+    </>
   );
 };
 

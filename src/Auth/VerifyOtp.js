@@ -12,6 +12,7 @@ const VerifyOTP = () => {
   const [token , setToken] = useState("");
   const { enqueueSnackbar } = useSnackbar();
   const verifyHandler = (e) => {
+    console.log("token",token)
     e.preventDefault();
     setLoading(true);
     axios({
@@ -23,8 +24,8 @@ const VerifyOTP = () => {
       }
     }).then(res => {
       setLoading(false);
-      enqueueSnackbar(res.data.message , {variant:"success"})
-      navigate('/')
+      enqueueSnackbar(res.data.message , {variant:"success"});      
+      navigate('/');
     }).catch(err => {
       setLoading(false);
       enqueueSnackbar(err.response.data.message , {variant:"error"})

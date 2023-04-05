@@ -16,7 +16,7 @@ const VerifyToken = () => {
     setLoading(true);
     axios({
       method:"POST",
-      url:`${process.env.REACT_APP_BASEURL}/user/verify-token`,
+      url:`${process.env.REACT_APP_BASEURL}/user/verify-otp-reset`,
       data:{
         otp:token,
         email:email
@@ -24,7 +24,7 @@ const VerifyToken = () => {
     }).then(res => {
       setLoading(false);
       enqueueSnackbar(res.data.message , {variant:"success"})
-      navigate('/')
+      navigate('/reset-password',{state:{email:email,otp:token}})
     }).catch(err => {
       setLoading(false);
       enqueueSnackbar(err.response.data.message , {variant:"error"})
@@ -36,7 +36,7 @@ const VerifyToken = () => {
       <div className="auth-main">
         <div className="auth-title">
           <h3>Token Token</h3>
-          <p>Enter Your Token To Continue !</p>
+          <p>Enter Your Token To RESET PASSWORD !</p>
         </div>
         <div className="row">
           <div className="col-md-4"></div>
