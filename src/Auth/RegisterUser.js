@@ -44,34 +44,24 @@ const RegisterUser = () => {
     }
     if (!/[a-z]/.test(registerData.password)) {
       setCheckLowerCase(false);
-      console.log("Password must contain at least one lowercase letter (a-z).");
     }
     if (/[a-z]/.test(registerData.password)) {
       setCheckLowerCase(true);
-      console.log("Password must contain at least one lowercase letter (a-z).");
     }
 
     // Check for uppercase letter
     if (!/[A-Z]/.test(registerData.password)) {
-      console.log("Password must contain at least one uppercase letter (A-Z).");
       setCheckUpperCase(false);
     }
     if (/[A-Z]/.test(registerData.password)) {
-      console.log("Password must contain at least one uppercase letter (A-Z).");
       setCheckUpperCase(true);
     }
 
     // Check for special character
     if (!/[!@#$%^&*()_+}{":;'?/>.<,]/.test(registerData.password)) {
-      console.log(
-        "Password must contain at least one special character (!@#$%^&*()_+}{\":;'?/>.<,)."
-      );
       setCheckSpecialChar(false);
     }
     if (/[!@#$%^&*()_+}{":;'?/>.<,]/.test(registerData.password)) {
-      console.log(
-        "Password must contain at least one special character (!@#$%^&*()_+}{\":;'?/>.<,)."
-      );
       setCheckSpecialChar(true);
     }
 

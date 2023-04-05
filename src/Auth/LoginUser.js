@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import ReCAPTCHA from "react-google-recaptcha";
 
 import axios from "axios";
-const LoginUser = () => {
+const LoginUser = ({refetch}) => {
   const initialState = {
     email: "",
     password: "",
@@ -17,9 +17,10 @@ const LoginUser = () => {
   const [cookiesChecker, setCookiesChecker] = useState(false);
   const [captchaChecker, setCaptchaChecker] = useState(false);
 
-  useEffect(() => {
-    console.log(Cookies.get("userData"));
-  }, [cookiesChecker]);
+
+  useEffect(()=>{
+
+  },[refetch])
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -43,7 +44,6 @@ const LoginUser = () => {
     })
       .then((res) => {
         setLoading(false);
-        console.log(res.data);
         Cookies.set("userData", res.data.token, { expires: 7 });
         setCookiesChecker(true);
         enqueueSnackbar(res.data.message, { variant: "success" });
